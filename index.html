@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.io Example</title>
+</head>
+<body>
+  <div id="notificationContainer">
+    <!-- Notifications will appear here -->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const socket = io('http://localhost:5000'); // Adjust the URL if needed
+
+      socket.on('connect', () => {
+        console.log('Connected to socket server');
+
+        // Replace 'user-123' with the actual user ID logic
+        const userId = 'cd69230f-b537-4e55-839a-27eebe580c42';
+        socket.emit('join', userId); // Join room with user's ID
+      });
+
+      socket.on('notification', (notification) => {
+        console.log('Received notification:', notification);
+
+        // Update UI to show notification
+        const notificationContainer = document.getElementById('notificationContainer');
+        const newNotification = document.createElement('div');
+        newNotification.textContent = `Notification: ${notification.message}`;
+        notificationContainer.appendChild(newNotification);
+      });
+
+      socket.on('disconnect', () => {
+        console.log('Disconnected from socket server');
+      });
+    });
+  </script>
+</body>
+</html>
